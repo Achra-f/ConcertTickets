@@ -1,0 +1,31 @@
+﻿@model OrderViewModel
+<h1>Bestelling successvol</h1>
+<div class="card d-flex flex-column h-100 p-2">
+    <div>
+        <h5>
+            @Model.ConcertArtist - @Model.ConcertLocation - @Model.ConcertDate.ToString("dd/MM/yyyy")
+        </h5>
+        <p>
+            <strong>Ticket type:</strong> @Model.TicketType
+        </p>
+        <p>
+            <strong>Aantal tickets:</strong> @Model.NumTickets
+        </p>
+        <p>
+            <strong>Totale prijs:</strong> @Model.TotalPrice.ToString("C")
+        </p>
+        @if (Model.DiscountApplied)
+        {
+            <div class="alert alert-success" role="alert">
+                Je lidkaart gaf je 10% korting.
+            </div>
+        }
+        <p>
+            <strong>Verkocht aan:</strong> @Model.UserName
+        </p>
+        <p>
+            <strong>Betaald:</strong> @(Model.Paid ? "ja" : "nee")
+        </p>
+        <a asp-controller="Concert" asp-action="Index" class="link-opacity-100">Terug naar overzicht</a>
+    </div>
+</div>

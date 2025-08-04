@@ -1,0 +1,50 @@
+﻿@model ConcertTickets.Models.ConcertDetailsViewModel
+
+<h1>Koop tickets voor @Model.Concert.Artist</h1>
+
+<div class="row">
+    <div class="col-md-6 mb-5">
+        <div class="card d-flex flex-column h-100">
+            <img src="@Model.Concert.ArtistImg" class="card-img-top p-1" alt="@Model.Concert.Artist" style="object-fit: cover; width: 350px;">
+            <div class="card-body d-flex flex-column flex-grow-1">
+                <div class="date-box h5">
+                    <h5>@Model.Concert.Date.ToString("ddd").ToUpper()</h5>
+                    <p class="day h5">@Model.Concert.Date.Day</p>
+                    <p class="month h5">@Model.Concert.Date.ToString("MMM yyyy").ToLower()</p>
+                </div>
+                <h5 class="card-title">@Model.Concert.Artist</h5>
+                <p class="card-text">@Model.Concert.Location</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-5">
+        <ul class="list-group">
+            @{
+                int counter = 1;
+            }
+            @foreach (var ticket in Model.TicketOffer)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="d-flex flex-column">
+                        <div class="ticket-info">
+                            <strong>@counter. @ticket.TicketType</strong>
+                        </div>
+                        <div class="p">
+                            <div class="ml-3">Ticketprijs: @ticket.Price.ToString("C")</div>
+                        </div>
+                    </div>
+                    <span class="badge bg-primary">@ticket.NumTickets tickers beschikbaar</span>
+                    <div class="ticket-action">
+                        <form asp-action="Create" asp-controller="Order" asp-route-id="@ticket.Id" method="get">
+                            <button type="submit" class="btn btn-outline-primary" @(ticket.NumTickets == 0 ? "disabled" : "")>
+                                Koop tickets
+                            </button>
+                        </form>
+                    </div>
+                </li>
+                counter++;
+            }
+        </ul>
+    </div>
+    <a asp-controller="Concert" asp-action="Index" class="link-opacity-100">Terug naar overzicht</a>
+</div>

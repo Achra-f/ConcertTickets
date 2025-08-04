@@ -1,0 +1,80 @@
+﻿@model OrderFormViewModel
+
+@{
+    ViewData["Title"] = "Order Tickets";
+}
+
+<h1>Bestel tickets voor @Model.Concert.Artist op @Model.Concert.Date.ToString("dd MMM yyyy")</h1>
+
+<div class="row">
+    <div class="col-md-6 d-flex flex-column gap-5">
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="mb-3">
+                    <h5>Type:</h5>
+                    <p>@Model.TicketType</p>
+                </div>
+                <div class="mb-3">
+                    <h5>Prijs:</h5>
+                    <p>@Model.Price.ToString("C")</p>
+                </div>
+                @if (Model.HasMemberCard)
+                {
+                    <div class="alert alert-success" role="alert">
+                        Met je lidkaart krijg je 10% korting
+                    </div>
+                }
+                <div class="mb-3">
+                    <h5>Aantal beschikbare plaatsen:</h5>
+                    <p>@Model.AvailableTickets</p>
+                </div>
+            </div>
+        </div>
+
+
+        <form asp-action="Create" method="post" class="d-flex flex-column gap-3">
+            <input type="hidden" asp-for="TicketOfferId" />
+            <div class="form-group">
+                <label asp-for="TotalTickets">Geeft het aantal gewenste tickets in (min 1, max 5)</label>
+                <input asp-for="TotalTickets" class="form-control" min="1" max="5" value="1">
+                <span asp-validation-for="TotalTickets" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <div class="form-check">
+                    <input asp-for="TermsOfService" class="form-check-input">
+                    <label asp-for="TermsOfService" class="form-check-label">
+                        Ik accepteer de algemene verkoopsvoorwaarden
+                    </label>
+                    <span asp-validation-for="TermsOfService" class="text-danger d-block mt-1"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Bestellen</button>
+        </form>
+    </div>
+
+    <div class="col-md-6 mb-5">
+        <div class="card d-flex flex-column h-100">
+            <img src="@Model.Concert.ArtistImg" class="card-img-top p-1" alt="@Model.Concert.Artist" style="object-fit: cover; width: 350px;">
+            <div class="card-body d-flex flex-column flex-grow-1">
+                <div class="date-box h5">
+                    <h5>@Model.Concert.Date.ToString("ddd").ToUpper()</h5>
+                    <p class="day h5">@Model.Concert.Date.Day</p>
+                    <p class="month h5">@Model.Concert.Date.ToString("MMM yyyy").ToLower()</p>
+                </div>
+                <h5 class="card-title">@Model.Concert.Artist</h5>
+                <p class="card-text">@Model.Concert.Location</p>
+            </div>
+        </div>
+    </div>
+    <a asp-controller="Concert" asp-action="Index" class="link-opacity-100">Terug naar overzicht</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

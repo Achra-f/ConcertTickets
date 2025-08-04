@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ConcertTickets.Models.ConcertViewModel>
+
+
+<h1>
+    Concert Overzicht
+</h1>
+<div class="row">
+    @foreach (var concert in Model)
+    {
+        <div class="col-md-3 mb-5">
+            <div class="card d-flex flex-column h-100">
+                <img src="@concert.ArtistImg" class="card-img-top p-1" alt="@concert.Artist">
+                <div class="card-body d-flex flex-column flex-grow-1">
+                    <div class="date-box h5">
+                        <h5>@concert.Date.ToString("ddd").ToUpper()</h5>
+                        <p class="day h5">@concert.Date.Day</p>
+                        <p class="month h5">@concert.Date.ToString("MMM yyyy").ToLower()</p>
+                    </div>
+                    <h5 class="card-title">@concert.Artist</h5>
+                    <p class="card-text">@concert.Location</p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <a asp-controller="Concert" asp-action="Buy" asp-route-id="@concert.Id" class="@concert.TicketButtonClass">
+                            @concert.TicketButtonLabel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
